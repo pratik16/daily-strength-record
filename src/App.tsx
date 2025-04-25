@@ -9,7 +9,14 @@ import NotFound from "./pages/NotFound";
 import RecordPage from "./pages/RecordPage";
 import ListPage from "./pages/ListPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -17,13 +24,14 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<RecordPage />} />
-          <Route path="/records" element={<ListPage />} />
-          <Route path="/index" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <div className="min-h-screen bg-background">
+          <Routes>
+            <Route path="/" element={<RecordPage />} />
+            <Route path="/records" element={<ListPage />} />
+            <Route path="/index" element={<Index />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
